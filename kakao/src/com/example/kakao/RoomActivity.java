@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 public class RoomActivity extends Activity {
 
+	private static final String NAME = "kmh4500";
+	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,9 @@ public class RoomActivity extends Activity {
 		
 		message.setText(messageString);
 		LinearLayout room = (LinearLayout) findViewById(R.id.room);
+		
+		TextView name = (TextView) item.findViewById(R.id.name);
+		name.setText(NAME);
 		room.addView(item, room.getChildCount() - 1);
 	}
 }
