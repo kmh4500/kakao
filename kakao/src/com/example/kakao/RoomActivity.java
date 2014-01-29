@@ -1,6 +1,7 @@
 package com.example.kakao;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -16,7 +17,9 @@ import android.widget.TextView;
 
 public class RoomActivity extends Activity {
 
-	private static final String NAME = "kmh4500";
+	private static final String MY_NAME = "kmh4500";
+	private static final String AUTO_NAME = "auto";
+	private HashMap<String, String> mKeywordMap;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,11 @@ public class RoomActivity extends Activity {
         String name = getIntent().getExtras().getString("name");
         setTitle(name);
         initSendButton();
+        
+        mKeywordMap = new HashMap<String, String>();
+        mKeywordMap.put("hi", "Hello");
+        mKeywordMap.put("hello", "Hello.");
+        mKeywordMap.put("nice", "Nice to meet you, too.");
     }
 
 	private void initSendButton() {
@@ -35,13 +43,22 @@ public class RoomActivity extends Activity {
 			public void onClick(View v) {
 				EditText text = (EditText) findViewById(R.id.edit);
 				String message = text.getEditableText().toString();
-				addMessageItem(message);
+				addMessageItem(MY_NAME, message);
+				analyzeMessage(message);
+				
 				text.setText("");
 			}
+
 		});
 	}
 
-	private void addMessageItem(String messageString) {
+	private void analyzeMessage(String message) {
+		if (message.contains("hi")) {
+			addMessageItem(AUTO_NAME, mKeywordMap.get("hi"));
+		}
+	}
+	
+	private void addMessageItem(String nameString, String messageString) {
 		View item = View.inflate(this, R.layout.message_item, null);
 		TextView message = (TextView) item.findViewById(R.id.message);
 		TextView time = (TextView) item.findViewById(R.id.time);
@@ -51,7 +68,7 @@ public class RoomActivity extends Activity {
 		LinearLayout room = (LinearLayout) findViewById(R.id.room);
 		
 		TextView name = (TextView) item.findViewById(R.id.name);
-		name.setText(NAME);
+		name.setText(nameString);
 		room.addView(item, room.getChildCount() - 1);
 	}
 }
