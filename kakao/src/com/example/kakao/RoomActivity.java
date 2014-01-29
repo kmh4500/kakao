@@ -34,6 +34,7 @@ public class RoomActivity extends Activity {
 	private String mCurrentPhotoPath;
 	private Bitmap mProfileImage;
 	private View mEmoticon;
+	private View mEmoticons;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +71,21 @@ public class RoomActivity extends Activity {
 		bmOptions.inSampleSize = 8;
 		mProfileImage = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions); 
 		
+		mEmoticons = findViewById(R.id.emoticons);
+		
 		mEmoticon = findViewById(R.id.emoticon);
 		mEmoticon.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
+				if (mEmoticons.getVisibility() == View.GONE) {
+					mEmoticons.setVisibility(View.VISIBLE);
+				} else {
+					mEmoticons.setVisibility(View.GONE);
+				}
+				/*
 				Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.smile);
-				addMessageItem(MY_NAME, null, imageBitmap );
+				addMessageItem(MY_NAME, null, imageBitmap );*/
 			}
 		});
 	}
