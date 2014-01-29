@@ -22,7 +22,6 @@ public class RoomActivity extends Activity {
         setContentView(R.layout.activity_room);
         String name = getIntent().getExtras().getString("name");
         setTitle(name);
-        
         initSendButton();
     }
 
@@ -49,6 +48,5 @@ public class RoomActivity extends Activity {
 		message.setText(messageString);
 		LinearLayout room = (LinearLayout) findViewById(R.id.room);
 		room.addView(item, room.getChildCount() - 1);
-		
 	}
 }
