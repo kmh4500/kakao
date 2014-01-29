@@ -69,10 +69,10 @@ public class RoomActivity extends Activity {
 		time.setText(DateFormat.format("hh:mm", new Date()));
 		
 		message.setText(messageString);
-		LinearLayout room = (LinearLayout) findViewById(R.id.room);
+		LinearLayout messages = (LinearLayout) findViewById(R.id.messages);
 		
 		TextView name = (TextView) item.findViewById(R.id.name);
 		name.setText(nameString);
-		room.addView(item, room.getChildCount() - 1);
+		messages.addView(item);
 	}
 }
