@@ -1,14 +1,17 @@
 package com.example.kakao;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.util.TimeUtils;
 import android.text.format.DateFormat;
 import android.view.Menu;
@@ -28,6 +31,8 @@ public class RoomActivity extends Activity {
 	private ScrollView mScrollView;
 	private View mCamera;
 	private ImageView mImageView;
+	private String mCurrentPhotoPath;
+	private Bitmap mProfileImage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +58,16 @@ public class RoomActivity extends Activity {
 		});
 		
 		mImageView = (ImageView) findViewById(R.id.image);
+
+		String imageFileName = "profile";
+		File storageDir = Environment
+				.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+		File image = new File(storageDir.toString(), imageFileName + ".jpg");
+		// Save a file: path for use with ACTION_VIEW intents
+		mCurrentPhotoPath = image.getAbsolutePath();
+		BitmapFactory.Options bmOptions = new BitmapFactory.Options();  
+		bmOptions.inSampleSize = 8;
+		mProfileImage = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions); 
 	}
 
 	private void initSendButton() {
@@ -108,6 +123,12 @@ public class RoomActivity extends Activity {
 			message.setVisibility(View.GONE);
 			image.setVisibility(View.VISIBLE);
 		}
+		
+		if (nameString == MY_NAME) {
+			ImageView pic = (ImageView) item.findViewById(R.id.pic);
+			pic.setImageBitmap(mProfileImage);
+		}
+		
 		LinearLayout messages = (LinearLayout) findViewById(R.id.messages);
 		messages.addView(item);
 	}
