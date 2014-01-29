@@ -49,6 +49,18 @@ public class MainActivity extends Activity {
 			}
 		});
         
+
+        findViewById(R.id.more_button).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mFriend.setVisibility(View.GONE);
+				mChat.setVisibility(View.GONE);
+				mSearch.setVisibility(View.GONE);
+				mMore.setVisibility(View.VISIBLE);
+			}
+		});
+        
         setPerson();
     }
 
