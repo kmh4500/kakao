@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -55,7 +57,20 @@ public class RoomActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				dispatchTakePictureIntent();
+				AlertDialog.Builder builder = new AlertDialog.Builder(RoomActivity.this);
+				CharSequence[] items = new CharSequence[] {
+						"Camera", "Gallery"
+				};
+				builder.setItems(items, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						if (which == 0) {
+							dispatchTakePictureIntent();
+						}
+					}
+				});
+				builder.show();
 			}
 		});
 		
