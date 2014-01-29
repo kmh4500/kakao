@@ -33,34 +33,12 @@
 	        android:layout_height="wrap_content"
 	        android:src="@drawable/more" />
     </LinearLayout>
-	<TextView
-	    android:id="@+id/friend"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_centerInParent="true"
-	    android:text="firend" />
+    <include layout="@layout/friend_tab" />
 	
-	<TextView
-	    android:id="@+id/chat"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_centerInParent="true"
-	    android:visibility="gone"
-	    android:text="chat" />
+    <include layout="@layout/chat_tab" />
+    
+    <include layout="@layout/search_tab" />
+    
+    <include layout="@layout/more_tab" />
 	
-	<TextView
-	    android:id="@+id/search"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_centerInParent="true"
-	    android:visibility="gone"
-	    android:text="search" />
-	
-	<TextView
-	    android:id="@+id/more"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_centerInParent="true"
-	    android:visibility="gone"
-	    android:text="more" />
 </RelativeLayout>
