@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class RoomActivity extends Activity {
@@ -21,6 +22,7 @@ public class RoomActivity extends Activity {
 	private static final String MY_NAME = "kmh4500";
 	private static final String AUTO_NAME = "auto";
 	private HashMap<String, String> mKeywordMap;
+	private ScrollView mScrollView;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class RoomActivity extends Activity {
         setTitle(name);
         initSendButton();
         
+        mScrollView = (ScrollView) findViewById(R.id.scroll_view);
         mKeywordMap = new HashMap<String, String>();
         mKeywordMap.put("hi", "Hello");
         mKeywordMap.put("hello", "Hello.");
@@ -48,6 +51,13 @@ public class RoomActivity extends Activity {
 				analyzeMessage(message);
 				
 				text.setText("");
+		        mScrollView.post(new Runnable() {
+
+		            @Override
+		            public void run() {
+		            	mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+		            }
+		        });
 			}
 
 		});
