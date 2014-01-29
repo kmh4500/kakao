@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -12,6 +13,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.util.TimeUtils;
@@ -67,6 +69,8 @@ public class RoomActivity extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 						if (which == 0) {
 							dispatchTakePictureIntent();
+						} else if (which == 1) {
+							pickPhotoFromGallery();
 						}
 					}
 				});
@@ -181,6 +185,7 @@ public class RoomActivity extends Activity {
 	}
 
 	static final int REQUEST_IMAGE_CAPTURE = 1;
+	static final int REQUEST_PICK_IMAGE = 2;
 
 	private void dispatchTakePictureIntent() {
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -195,6 +200,30 @@ public class RoomActivity extends Activity {
 			Bundle extras = data.getExtras();
 			Bitmap imageBitmap = (Bitmap) extras.get("data");
 			addMessageItem(MY_NAME, null, imageBitmap);
+		} else if (requestCode == REQUEST_PICK_IMAGE && resultCode == RESULT_OK) {
+			Uri uri = data.getData();
+
+	        //User had pick an image.
+	        Cursor cursor = getContentResolver().query(uri, 
+	        		new String[] { 
+	        		android.provider.MediaStore.Images.ImageColumns.DATA}, null, null, null);
+	        cursor.moveToFirst();
+
+	        //Link to the image
+	        final String imageFilePath = cursor.getString(0);
+	        BitmapFactory.Options bmOptions = new BitmapFactory.Options();  
+			bmOptions.inSampleSize = 8;
+			Bitmap imageBitmap = BitmapFactory.decodeFile(imageFilePath, bmOptions); 
+			addMessageItem(MY_NAME, null, imageBitmap);
+	        cursor.close();
+
 		}
+	}
+
+	private void pickPhotoFromGallery() {
+		Intent intent = new Intent();
+		intent.setType("image/*");
+		intent.setAction(Intent.ACTION_GET_CONTENT);
+		startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_PICK_IMAGE);
 	}
 }
