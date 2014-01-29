@@ -1,7 +1,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/pic"
         android:layout_width="60dp"
@@ -10,7 +10,7 @@
    	</ImageView>
    	<LinearLayout 
    	    android:layout_width="wrap_content"
-   	    android:layout_height="60dp"
+   	    android:layout_height="wrap_content"
    	    android:paddingLeft="8dp"
    	    android:orientation="vertical">
 	   	<TextView
@@ -25,6 +25,13 @@
 	   	    android:layout_height="wrap_content"
 	   	    android:background="#ffffff00"
 	   	    android:text="You are such a junk food junkie." />
+	   	
+	    <ImageView 
+	        android:id="@+id/image"
+	        android:layout_width="100dp"
+	        android:layout_height="100dp"
+	        android:background="#ffff0000"
+	        />
    	</LinearLayout>
    	<View
    	    android:layout_width="0dp"

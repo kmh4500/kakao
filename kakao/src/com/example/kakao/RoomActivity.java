@@ -63,7 +63,7 @@ public class RoomActivity extends Activity {
 			public void onClick(View v) {
 				EditText text = (EditText) findViewById(R.id.edit);
 				String message = text.getEditableText().toString();
-				addMessageItem(MY_NAME, message);
+				addMessageItem(MY_NAME, message, null);
 				analyzeMessage(message);
 
 				text.setText("");
@@ -83,22 +83,32 @@ public class RoomActivity extends Activity {
 		Set<String> keySet = mKeywordMap.keySet();
 		for (String key : keySet) {
 			if (message.contains(key)) {
-				addMessageItem(AUTO_NAME, mKeywordMap.get(key));
+				addMessageItem(AUTO_NAME, mKeywordMap.get(key), null);
 			}
 		}
 	}
 
-	private void addMessageItem(String nameString, String messageString) {
+	private void addMessageItem(String nameString, String messageString, Bitmap imageBitmap) {
 		View item = View.inflate(this, R.layout.message_item, null);
-		TextView message = (TextView) item.findViewById(R.id.message);
 		TextView time = (TextView) item.findViewById(R.id.time);
 		time.setText(DateFormat.format("hh:mm", new Date()));
-
-		message.setText(messageString);
-		LinearLayout messages = (LinearLayout) findViewById(R.id.messages);
-
+		
 		TextView name = (TextView) item.findViewById(R.id.name);
 		name.setText(nameString);
+		
+		TextView message = (TextView) item.findViewById(R.id.message);
+		ImageView image = (ImageView) item.findViewById(R.id.image);
+		
+		if (imageBitmap == null) {
+			message.setText(messageString);
+			message.setVisibility(View.VISIBLE);
+			image.setVisibility(View.GONE);
+		} else {
+			image.setImageBitmap(imageBitmap);
+			message.setVisibility(View.GONE);
+			image.setVisibility(View.VISIBLE);
+		}
+		LinearLayout messages = (LinearLayout) findViewById(R.id.messages);
 		messages.addView(item);
 	}
 
@@ -116,7 +126,7 @@ public class RoomActivity extends Activity {
 		if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 			Bundle extras = data.getExtras();
 			Bitmap imageBitmap = (Bitmap) extras.get("data");
-			mImageView.setImageBitmap(imageBitmap);
+			addMessageItem(MY_NAME, null, imageBitmap);
 		}
 	}
 }
