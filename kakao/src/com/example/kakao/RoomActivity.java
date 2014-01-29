@@ -2,6 +2,7 @@ package com.example.kakao;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Set;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -53,8 +54,11 @@ public class RoomActivity extends Activity {
 	}
 
 	private void analyzeMessage(String message) {
-		if (message.contains("hi")) {
-			addMessageItem(AUTO_NAME, mKeywordMap.get("hi"));
+		Set<String> keySet = mKeywordMap.keySet();
+		for (String key : keySet) {
+			if (message.contains(key)) {
+				addMessageItem(AUTO_NAME, mKeywordMap.get(key));
+			}
 		}
 	}
 	
