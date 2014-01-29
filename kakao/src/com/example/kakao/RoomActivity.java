@@ -83,9 +83,21 @@ public class RoomActivity extends Activity {
 				} else {
 					mEmoticons.setVisibility(View.GONE);
 				}
-				/*
-				Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.smile);
-				addMessageItem(MY_NAME, null, imageBitmap );*/
+			}
+		});
+		
+		setupEmoticons(R.id.smile, R.drawable.smile);
+		setupEmoticons(R.id.angry, R.drawable.angry);
+		setupEmoticons(R.id.sad, R.drawable.sad);
+	}
+
+	private void setupEmoticons(int iconId, final int iconDrawableId) {
+		findViewById(iconId).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), iconDrawableId);
+				addMessageItem(MY_NAME, null, imageBitmap );
 			}
 		});
 	}
