@@ -1,8 +1,10 @@
 package com.example.kakao;
 
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +18,7 @@ public class MainActivity extends Activity {
 	private View mChat;
 	private View mSearch;
 	private View mMore;
+	private ImageView mProfile;
 
 
 	@Override
@@ -62,6 +65,15 @@ public class MainActivity extends Activity {
 		});
         
         setPerson();
+        
+        mProfile = (ImageView) findViewById(R.id.profile);
+        mProfile.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				dispatchTakePictureIntent();
+			}
+		});
     }
 
 	private String names[] = new String[] {
@@ -111,5 +123,22 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    
+
+	static final int REQUEST_IMAGE_CAPTURE = 1;
+	
+	private void dispatchTakePictureIntent() {
+		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+			startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+			Bundle extras = data.getExtras();
+			Bitmap imageBitmap = (Bitmap) extras.get("data");
+			mProfile.setImageBitmap(imageBitmap);
+		}
+	}
 }
