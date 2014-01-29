@@ -5,7 +5,10 @@ import java.util.HashMap;
 import java.util.Set;
 
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v4.util.TimeUtils;
 import android.text.format.DateFormat;
 import android.view.Menu;
@@ -23,41 +26,54 @@ public class RoomActivity extends Activity {
 	private static final String AUTO_NAME = "auto";
 	private HashMap<String, String> mKeywordMap;
 	private ScrollView mScrollView;
-	
+	private View mCamera;
+	private ImageView mImageView;
+
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_room);
-        String name = getIntent().getExtras().getString("name");
-        setTitle(name);
-        initSendButton();
-        
-        mScrollView = (ScrollView) findViewById(R.id.scroll_view);
-        mKeywordMap = new HashMap<String, String>();
-        mKeywordMap.put("hi", "Hello");
-        mKeywordMap.put("hello", "Hello.");
-        mKeywordMap.put("nice", "Nice to meet you, too.");
-    }
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_room);
+		String name = getIntent().getExtras().getString("name");
+		setTitle(name);
+		initSendButton();
+
+		mScrollView = (ScrollView) findViewById(R.id.scroll_view);
+		mKeywordMap = new HashMap<String, String>();
+		mKeywordMap.put("hi", "Hello");
+		mKeywordMap.put("hello", "Hello.");
+		mKeywordMap.put("nice", "Nice to meet you, too.");
+		
+		mCamera = findViewById(R.id.camera);
+		mCamera.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				dispatchTakePictureIntent();
+			}
+		});
+		
+		mImageView = (ImageView) findViewById(R.id.image);
+	}
 
 	private void initSendButton() {
 		View send = findViewById(R.id.send);
 		send.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				EditText text = (EditText) findViewById(R.id.edit);
 				String message = text.getEditableText().toString();
 				addMessageItem(MY_NAME, message);
 				analyzeMessage(message);
-				
-				text.setText("");
-		        mScrollView.post(new Runnable() {
 
-		            @Override
-		            public void run() {
-		            	mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
-		            }
-		        });
+				text.setText("");
+				mScrollView.post(new Runnable() {
+
+					@Override
+					public void run() {
+						mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+					}
+				});
 			}
 
 		});
@@ -71,18 +87,36 @@ public class RoomActivity extends Activity {
 			}
 		}
 	}
-	
+
 	private void addMessageItem(String nameString, String messageString) {
 		View item = View.inflate(this, R.layout.message_item, null);
 		TextView message = (TextView) item.findViewById(R.id.message);
 		TextView time = (TextView) item.findViewById(R.id.time);
 		time.setText(DateFormat.format("hh:mm", new Date()));
-		
+
 		message.setText(messageString);
 		LinearLayout messages = (LinearLayout) findViewById(R.id.messages);
-		
+
 		TextView name = (TextView) item.findViewById(R.id.name);
 		name.setText(nameString);
 		messages.addView(item);
+	}
+
+	static final int REQUEST_IMAGE_CAPTURE = 1;
+
+	private void dispatchTakePictureIntent() {
+		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+			startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+			Bundle extras = data.getExtras();
+			Bitmap imageBitmap = (Bitmap) extras.get("data");
+			mImageView.setImageBitmap(imageBitmap);
+		}
 	}
 }
