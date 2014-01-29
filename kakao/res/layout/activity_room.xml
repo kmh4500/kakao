@@ -41,6 +41,11 @@
 	        <requestFocus />
 	    </EditText>
 	    <Button
+	        android:id="@+id/emoticon"
+	        android:layout_width="40dp"
+	        android:layout_height="60dp"
+	        android:text="E" />
+	    <Button
 	        android:id="@+id/send"
 	        android:layout_width="80dp"
 	        android:layout_height="60dp"

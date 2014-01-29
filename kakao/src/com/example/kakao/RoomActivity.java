@@ -33,6 +33,7 @@ public class RoomActivity extends Activity {
 	private ImageView mImageView;
 	private String mCurrentPhotoPath;
 	private Bitmap mProfileImage;
+	private View mEmoticon;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,16 @@ public class RoomActivity extends Activity {
 		BitmapFactory.Options bmOptions = new BitmapFactory.Options();  
 		bmOptions.inSampleSize = 8;
 		mProfileImage = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions); 
+		
+		mEmoticon = findViewById(R.id.emoticon);
+		mEmoticon.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.smile);
+				addMessageItem(MY_NAME, null, imageBitmap );
+			}
+		});
 	}
 
 	private void initSendButton() {
