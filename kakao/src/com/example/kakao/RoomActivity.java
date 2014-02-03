@@ -123,7 +123,10 @@ public class RoomActivity extends Activity {
 
 					@Override
 					public void run() {
-						Toast.makeText(RoomActivity.this, result, Toast.LENGTH_LONG).show();
+						String[] tokens = result.split(",");
+						for (String token : tokens) {
+							addMessageItem(MY_NAME, token, null);
+						}
 					}
 					
 				});
