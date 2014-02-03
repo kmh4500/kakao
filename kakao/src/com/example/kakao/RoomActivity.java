@@ -41,13 +41,16 @@ public class RoomActivity extends Activity {
 	private Bitmap mProfileImage;
 	private View mEmoticon;
 	private View mEmoticons;
+	private int mRoomId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_room);
 		String name = getIntent().getExtras().getString("name");
+		
 		setTitle(name);
+		mRoomId = getIntent().getExtras().getInt("room_id");
 		initSendButton();
 
 		mScrollView = (ScrollView) findViewById(R.id.scroll_view);
@@ -115,7 +118,7 @@ public class RoomActivity extends Activity {
 
 			@Override
 			protected Object doInBackground(Object... arg0) {
-				final String result = RestClient.getMessages(1);
+				final String result = RestClient.getMessages(mRoomId);
 				runOnUiThread(new Runnable() {
 
 					@Override

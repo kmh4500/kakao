@@ -108,6 +108,7 @@ public class MainActivity extends Activity {
 			mPic.setImageResource(pics[i]);
 			mText = (TextView) friendItemView.findViewById(R.id.text);
 			final String roomName = names[i];
+			final int roomId = i + 1;
 			friendItemView.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -115,6 +116,7 @@ public class MainActivity extends Activity {
 					Intent intent = new Intent(MainActivity.this,
 							RoomActivity.class);
 					intent.putExtra("name", roomName);
+					intent.putExtra("room_id", roomId);
 					startActivity(intent);
 				}
 			});
