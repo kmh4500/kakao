@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -108,6 +109,16 @@ public class RoomActivity extends Activity {
 		setupEmoticons(R.id.smile, R.drawable.smile);
 		setupEmoticons(R.id.angry, R.drawable.angry);
 		setupEmoticons(R.id.sad, R.drawable.sad);
+		
+		new AsyncTask() {
+
+			@Override
+			protected Object doInBackground(Object... arg0) {
+				System.out.println(RestClient.getMessages(1));
+				return null;
+			}
+			
+		}.execute();
 	}
 
 	private void setupEmoticons(int iconId, final int iconDrawableId) {
@@ -216,7 +227,6 @@ public class RoomActivity extends Activity {
 			Bitmap imageBitmap = BitmapFactory.decodeFile(imageFilePath, bmOptions); 
 			addMessageItem(MY_NAME, null, imageBitmap);
 	        cursor.close();
-
 		}
 	}
 
