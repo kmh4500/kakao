@@ -156,10 +156,18 @@ public class RoomActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				EditText text = (EditText) findViewById(R.id.edit);
-				String message = text.getEditableText().toString();
+				final String message = text.getEditableText().toString();
 				addMessageItem(MY_NAME, message, null);
 				analyzeMessage(message);
+				new AsyncTask() {
 
+					@Override
+					protected Object doInBackground(Object... arg0) {
+						RestClient.sendMessages(11, message, mRoomId);
+						return null;
+					}
+					
+				}.execute();
 				text.setText("");
 				mScrollView.post(new Runnable() {
 
