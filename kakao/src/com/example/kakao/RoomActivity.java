@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RoomActivity extends Activity {
 
@@ -114,7 +115,15 @@ public class RoomActivity extends Activity {
 
 			@Override
 			protected Object doInBackground(Object... arg0) {
-				System.out.println(RestClient.getMessages(1));
+				final String result = RestClient.getMessages(1);
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						Toast.makeText(RoomActivity.this, result, Toast.LENGTH_LONG).show();
+					}
+					
+				});
 				return null;
 			}
 			
