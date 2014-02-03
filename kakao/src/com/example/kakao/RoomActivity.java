@@ -124,8 +124,10 @@ public class RoomActivity extends Activity {
 					@Override
 					public void run() {
 						String[] tokens = result.split(",");
-						for (String token : tokens) {
-							addMessageItem(MY_NAME, token, null);
+						for (int i = tokens.length - 1; i >= 0; i--) {
+							String token = tokens[i];
+							String[] details = token.split("\\\\");
+							addMessageItem(details[0], details[1], null);
 						}
 					}
 					
