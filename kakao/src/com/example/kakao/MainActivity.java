@@ -226,7 +226,7 @@ public class MainActivity extends Activity {
 
 	private void setPerson() {
 		mFriend = (ListView) findViewById(R.id.friend);
-		mFriend.setAdapter(new FriendAdapter(this, R.layout.test, names));
+		mFriend.setAdapter(new FriendAdapter(this, R.layout.friend_item, R.id.name, names));
 		/*
 		for (int i = 0; i < 4; ++i) {
 			View friendItemView = View
@@ -256,10 +256,9 @@ public class MainActivity extends Activity {
 	
 	private class FriendAdapter extends ArrayAdapter<String> {
 
-		public FriendAdapter(Context context, int resource, String[] objects) {
-			super(context, resource, objects);
+		public FriendAdapter(Context context, int resource, int textViewResourceId, String[] objects) {
+			super(context, resource, textViewResourceId, objects);
 		}
-		
 	}
 
 	@Override
