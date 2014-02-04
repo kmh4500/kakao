@@ -69,7 +69,7 @@ public class GcmIntentService extends IntentService {
         intent.putExtra("name", MainActivity.names[0]);
         intent.putExtra("room_id",1);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-        		intent, 0);
+        		intent, PendingIntent.FLAG_CANCEL_CURRENT);
         Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
