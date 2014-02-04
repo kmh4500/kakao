@@ -48,7 +48,7 @@ public class GcmIntentService extends IntentService {
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                // Post notification of received message.
-                sendNotification("Received: " + extras.toString());
+                sendNotification(extras.getString("content"));
                 Log.i(TAG, "Received: " + extras.toString());
             }
         }
@@ -69,9 +69,10 @@ public class GcmIntentService extends IntentService {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
         .setSmallIcon(R.drawable.ic_stat_gcm)
-        .setContentTitle("GCM Notification")
+        .setContentTitle("New kakao message")
         .setStyle(new NotificationCompat.BigTextStyle()
         .bigText(msg))
+        .setAutoCancel(true)
         .setContentText(msg);
 
         mBuilder.setContentIntent(contentIntent);
