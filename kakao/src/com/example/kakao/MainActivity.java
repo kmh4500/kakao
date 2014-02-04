@@ -120,9 +120,9 @@ public class MainActivity extends Activity {
 	    	gcm = GoogleCloudMessaging.getInstance(this);
             regid = getRegistrationId(context);
 
-            if (TextUtils.isEmpty(regid)) {
+            //if (TextUtils.isEmpty(regid)) {
                 registerInBackground();
-            }
+            //}
 	    } else {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
@@ -352,6 +352,7 @@ public class MainActivity extends Activity {
 
 	        @Override
 	        protected void onPostExecute(String msg) {
+	        	System.out.println("reg id : " + msg);
 	        	Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
 	        }
 	    }.execute(null, null, null);
