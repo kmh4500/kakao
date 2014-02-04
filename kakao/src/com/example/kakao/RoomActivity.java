@@ -115,6 +115,10 @@ public class RoomActivity extends Activity {
 		setupEmoticons(R.id.angry, R.drawable.angry);
 		setupEmoticons(R.id.sad, R.drawable.sad);
 		
+		getMessage();
+	}
+	
+	public void getMessage() {
 		new AsyncTask() {
 
 			@Override
@@ -125,11 +129,21 @@ public class RoomActivity extends Activity {
 					@Override
 					public void run() {
 						String[] tokens = result.split(",");
+						LinearLayout messages = (LinearLayout) findViewById(R.id.messages);
+						messages.removeAllViews();
 						for (int i = tokens.length - 1; i >= 0; i--) {
 							String token = tokens[i];
 							String[] details = token.split("\\\\");
 							addMessageItem(details[0], details[1], null);
 						}
+
+						mScrollView.post(new Runnable() {
+
+							@Override
+							public void run() {
+								mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+							}
+						});
 					}
 					
 				});
@@ -137,6 +151,18 @@ public class RoomActivity extends Activity {
 			}
 			
 		}.execute();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		GcmIntentService.roomActivity = this;
+	}
+	
+	@Override
+	protected void onPause() {
+		GcmIntentService.roomActivity = null;
+		super.onPause();
 	}
 	
 	@Override

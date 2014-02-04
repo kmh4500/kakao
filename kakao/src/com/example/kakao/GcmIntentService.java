@@ -17,7 +17,10 @@ import android.util.Log;
 public class GcmIntentService extends IntentService {
     public static final int NOTIFICATION_ID = 1;
 	private static final String TAG = "GcmIntentService";
-    private NotificationManager mNotificationManager;
+	
+	public static RoomActivity roomActivity;
+    
+	private NotificationManager mNotificationManager;
     NotificationCompat.Builder builder;
 
     public GcmIntentService() {
@@ -49,6 +52,9 @@ public class GcmIntentService extends IntentService {
             // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
+            	if (roomActivity != null) {
+            		roomActivity.getMessage();
+            	}
                // Post notification of received message.
                 sendNotification(extras.getString("content"));
                 Log.i(TAG, "Received: " + extras.toString());
