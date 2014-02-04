@@ -85,7 +85,7 @@ public class GcmIntentService extends IntentService {
         .bigText(msg))
         .setAutoCancel(true)
         .setSound(uri)
-        .setVibrate(new long[]{2000, 400, 500, 400, 1000, 400, 500})
+        .setVibrate(new long[]{100, 700, 100, 200, 100, 400, 100, 300})
         .setContentText(msg);
 
         mBuilder.setContentIntent(contentIntent);
