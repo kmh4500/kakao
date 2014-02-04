@@ -114,7 +114,7 @@ public class MainActivity extends Activity {
 				dispatchTakePictureIntent();
 			}
 		});
-		
+		context = getApplicationContext();
 		// Check device for Play Services APK.
 	    if (checkPlayServices()) {
 	    	gcm = GoogleCloudMessaging.getInstance(this);
