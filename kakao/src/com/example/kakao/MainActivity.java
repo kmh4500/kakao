@@ -206,10 +206,10 @@ public class MainActivity extends Activity {
 	    return true;
 	}
 	
-	private String names[] = new String[] { "Seungwon", "Jongbae", "Wooseok",
+	public static String names[] = new String[] { "Seungwon", "Jongbae", "Wooseok",
 			"Jinwoo" };
 
-	private String texts[] = new String[] { "Hi", "Hello", "Nice to meet you",
+	private static String texts[] = new String[] { "Hi", "Hello", "Nice to meet you",
 			"Me too." };
 
 	private Integer pics[] = new Integer[] { R.drawable.profile,

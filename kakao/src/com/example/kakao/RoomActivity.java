@@ -46,6 +46,7 @@ public class RoomActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Toast.makeText(this, "onCreate", Toast.LENGTH_LONG).show();
 		setContentView(R.layout.activity_room);
 		String name = getIntent().getExtras().getString("name");
 		
@@ -136,6 +137,12 @@ public class RoomActivity extends Activity {
 			}
 			
 		}.execute();
+	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		Toast.makeText(this, "onNewIntent", Toast.LENGTH_LONG).show();
 	}
 
 	private void setupEmoticons(int iconId, final int iconDrawableId) {
