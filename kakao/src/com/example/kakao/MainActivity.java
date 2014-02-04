@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
@@ -26,8 +27,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +41,7 @@ public class MainActivity extends Activity {
 
 	private static final String TAG = "MainActivity";
 	
-	private LinearLayout mFriend;
+	private ListView mFriend;
 	private View mChat;
 	private View mSearch;
 	private View mMore;
@@ -64,7 +69,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		mFriend = (LinearLayout) findViewById(R.id.friend);
+		mFriend = (ListView) findViewById(R.id.friend);
 		mChat = findViewById(R.id.chat);
 		mSearch = findViewById(R.id.search);
 		mMore = findViewById(R.id.more);
@@ -220,7 +225,9 @@ public class MainActivity extends Activity {
 	private TextView mText;
 
 	private void setPerson() {
-		mFriend = (LinearLayout) findViewById(R.id.friend);
+		mFriend = (ListView) findViewById(R.id.friend);
+		mFriend.setAdapter(new FriendAdapter(this, R.layout.test, names));
+		/*
 		for (int i = 0; i < 4; ++i) {
 			View friendItemView = View
 					.inflate(this, R.layout.friend_item, null);
@@ -244,7 +251,15 @@ public class MainActivity extends Activity {
 				}
 			});
 			mText.setText(texts[i]);
+		}*/
+	}
+	
+	private class FriendAdapter extends ArrayAdapter<String> {
+
+		public FriendAdapter(Context context, int resource, String[] objects) {
+			super(context, resource, objects);
 		}
+		
 	}
 
 	@Override
