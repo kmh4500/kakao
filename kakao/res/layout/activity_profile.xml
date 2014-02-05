@@ -4,6 +4,7 @@
     android:background="#88000000"
     android:gravity="bottom">
     <TextView
+        android:id="@+id/profile_name"
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:background="#ffffe4b5"
