@@ -46,7 +46,7 @@
 	       android:padding="10dp"
 	       android:text="1:1 Chating"
 	       android:textColor="@android:color/white"
-	       android:background="#ffbdb76d"
+	       android:background="@drawable/chat_button"
 	       />
 	   <ImageView 
 	       android:id="@+id/close"

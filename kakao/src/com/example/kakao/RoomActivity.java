@@ -18,6 +18,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.util.TimeUtils;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.View;
@@ -128,6 +129,9 @@ public class RoomActivity extends Activity {
 
 					@Override
 					public void run() {
+						if (TextUtils.isEmpty(result)) {
+							return;
+						}
 						String[] tokens = result.split(",");
 						LinearLayout messages = (LinearLayout) findViewById(R.id.messages);
 						messages.removeAllViews();
