@@ -254,7 +254,7 @@ public class MainActivity extends FragmentActivity {
 	        >= Build.VERSION_CODES.HONEYCOMB ?
 	        Contacts.DISPLAY_NAME_PRIMARY :
 	        Contacts.DISPLAY_NAME,*/
-            ContactsContract.CommonDataKinds.Email.DATA
+            ContactsContract.CommonDataKinds.Email.DATA 
 	};
 
 	private static final int[] TO_IDS = {
