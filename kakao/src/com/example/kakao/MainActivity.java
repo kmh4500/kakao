@@ -307,8 +307,16 @@ public class MainActivity extends FragmentActivity {
 					long arg3) {
 				Intent intent = new Intent(MainActivity.this,
 						ProfileActivity.class);
-				intent.putExtra("name", names[position]);
-				intent.putExtra("room_id", position + 1);
+				Cursor cursor = mCursorAdapter.getCursor();
+				if (cursor.moveToPosition(position)) {
+					String name = cursor.getString(cursor.getColumnIndex(
+							ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+					String phone = cursor.getString(cursor.getColumnIndex(
+							ContactsContract.CommonDataKinds.Phone.NUMBER));
+					intent.putExtra("name", name);
+					intent.putExtra("room_id", position + 1);
+					intent.putExtra("phone", phone);
+				}
 				startActivity(intent);
 			}
 		});
