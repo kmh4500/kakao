@@ -75,9 +75,16 @@ public class MainActivity extends FragmentActivity {
 
     String regid;
     
+    public static final String[] students = {
+    	"jongbae", "jineui", "kimoon", "jungin", "hyungchul", "seunghwan", "jaehyung"
+    };
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		int randomIndex = (int) Math.floor(Math.random() * (double) students.length);
+		Toast.makeText(this, "DangChum ! " + students[randomIndex ], Toast.LENGTH_LONG).show();
+		
 		setContentView(R.layout.activity_main);
 
 		mFriend = (ListView) findViewById(R.id.friend);
