@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
 import android.provider.MediaStore;
 import android.app.Activity;
@@ -240,22 +241,25 @@ public class MainActivity extends FragmentActivity {
         {
             Contacts._ID,
             Contacts.LOOKUP_KEY,
-            Build.VERSION.SDK_INT
+          /*  Build.VERSION.SDK_INT
                     >= Build.VERSION_CODES.HONEYCOMB ?
                     Contacts.DISPLAY_NAME_PRIMARY :
-                    Contacts.DISPLAY_NAME
+                    Contacts.DISPLAY_NAME,*/
+            ContactsContract.CommonDataKinds.Email.DATA,
 
         };
 	
 	private static final String[] FROM_COLUMNS = {
-        Build.VERSION.SDK_INT
+       /* Build.VERSION.SDK_INT
 	        >= Build.VERSION_CODES.HONEYCOMB ?
 	        Contacts.DISPLAY_NAME_PRIMARY :
-	        Contacts.DISPLAY_NAME
+	        Contacts.DISPLAY_NAME,*/
+            ContactsContract.CommonDataKinds.Email.DATA
 	};
 
 	private static final int[] TO_IDS = {
-		R.id.name
+		R.id.name,
+		// R.id.text
 	};
 	
 	private void setPerson() {
@@ -277,7 +281,7 @@ public class MainActivity extends FragmentActivity {
 			public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
 				return new CursorLoader(
 		                MainActivity.this,
-		                Contacts.CONTENT_URI,
+		                ContactsContract.CommonDataKinds.Email.CONTENT_URI,
 		                PROJECTION,
 		                null,
 		                null,
