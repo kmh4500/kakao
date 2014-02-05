@@ -22,6 +22,7 @@
 	       android:textColor="@android:color/black"
 	       android:layout_toRightOf="@id/profile"
 	       android:layout_alignBottom="@id/profile"
+	       android:background="@drawable/call_button"
 	       />
 	   
 	   <TextView
