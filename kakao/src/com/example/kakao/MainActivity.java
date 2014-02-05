@@ -10,8 +10,10 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.ContactsContract.Contacts;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Context;
@@ -19,9 +21,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -38,7 +46,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
 	private static final String TAG = "MainActivity";
@@ -202,8 +210,8 @@ public class MainActivity extends Activity {
 	    int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
 	    if (resultCode != ConnectionResult.SUCCESS) {
 	        if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-	            GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-	                    PLAY_SERVICES_RESOLUTION_REQUEST).show();
+	            //GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+	            //        PLAY_SERVICES_RESOLUTION_REQUEST).show();
 	        } else {
 	            Log.i(TAG, "This device is not supported.");
 	            finish();
@@ -226,9 +234,69 @@ public class MainActivity extends Activity {
 	private ImageView mPic;
 	private TextView mText;
 
+	private SimpleCursorAdapter mCursorAdapter;
+
+	private static final String[] PROJECTION =
+        {
+            Contacts._ID,
+            Contacts.LOOKUP_KEY,
+            Build.VERSION.SDK_INT
+                    >= Build.VERSION_CODES.HONEYCOMB ?
+                    Contacts.DISPLAY_NAME_PRIMARY :
+                    Contacts.DISPLAY_NAME
+
+        };
+	
+	private static final String[] FROM_COLUMNS = {
+        Build.VERSION.SDK_INT
+	        >= Build.VERSION_CODES.HONEYCOMB ?
+	        Contacts.DISPLAY_NAME_PRIMARY :
+	        Contacts.DISPLAY_NAME
+	};
+
+	private static final int[] TO_IDS = {
+		R.id.name
+	};
+	
 	private void setPerson() {
 		mFriend = (ListView) findViewById(R.id.friend);
-		mFriend.setAdapter(new FriendAdapter(this, R.layout.friend_item, R.id.name, names));
+		
+		mCursorAdapter = new SimpleCursorAdapter(
+                this,
+                R.layout.friend_item,
+                null,
+                FROM_COLUMNS, TO_IDS,
+                0);
+		mFriend.setAdapter(mCursorAdapter);
+		
+
+        // Initializes the loader
+	    getSupportLoaderManager().initLoader(0, null, new LoaderCallbacks<Cursor>() {
+
+			@Override
+			public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+				return new CursorLoader(
+		                MainActivity.this,
+		                Contacts.CONTENT_URI,
+		                PROJECTION,
+		                null,
+		                null,
+		                null
+		        );
+			}
+
+			@Override
+			public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
+				mCursorAdapter.swapCursor(cursor);
+			}
+
+			@Override
+			public void onLoaderReset(Loader<Cursor> arg0) {
+		        // Delete the reference to the existing Cursor
+		        mCursorAdapter.swapCursor(null);
+			}
+		});
+		
 		mFriend.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -239,24 +307,8 @@ public class MainActivity extends Activity {
 				intent.putExtra("name", names[position]);
 				intent.putExtra("room_id", position + 1);
 				startActivity(intent);
-				
 			}
 		});
-		/*
-		for (int i = 0; i < 4; ++i) {
-			View friendItemView = View
-					.inflate(this, R.layout.friend_item, null);
-			mFriend.addView(friendItemView);
-			
-			final String roomName = names[i];
-			final int roomId = i + 1;
-			friendItemView.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-				}
-			});
-		}*/
 	}
 	
 	private class FriendAdapter extends ArrayAdapter<String> {
