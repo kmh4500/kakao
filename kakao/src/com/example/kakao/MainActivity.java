@@ -83,7 +83,7 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		
 		int randomIndex = (int) Math.floor(Math.random() * (double) students.length);
-		Toast.makeText(this, "DangChum ! " + students[randomIndex ], Toast.LENGTH_LONG).show();
+		Toast.makeText(this, "DangChum ! " + students[randomIndex], Toast.LENGTH_LONG).show();
 		
 		setContentView(R.layout.activity_main);
 
