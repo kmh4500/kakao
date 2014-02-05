@@ -239,27 +239,19 @@ public class MainActivity extends FragmentActivity {
 
 	private static final String[] PROJECTION =
         {
-            Contacts._ID,
-            Contacts.LOOKUP_KEY,
-          /*  Build.VERSION.SDK_INT
-                    >= Build.VERSION_CODES.HONEYCOMB ?
-                    Contacts.DISPLAY_NAME_PRIMARY :
-                    Contacts.DISPLAY_NAME,*/
-            ContactsContract.CommonDataKinds.Email.DATA,
-
+			ContactsContract.CommonDataKinds.Phone._ID,
+			ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+			ContactsContract.CommonDataKinds.Phone.NUMBER,
         };
 	
 	private static final String[] FROM_COLUMNS = {
-       /* Build.VERSION.SDK_INT
-	        >= Build.VERSION_CODES.HONEYCOMB ?
-	        Contacts.DISPLAY_NAME_PRIMARY :
-	        Contacts.DISPLAY_NAME,*/
-            ContactsContract.CommonDataKinds.Email.DATA
+		ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+		ContactsContract.CommonDataKinds.Phone.NUMBER,
 	};
 
 	private static final int[] TO_IDS = {
 		R.id.name,
-		// R.id.text
+		R.id.text
 	};
 	
 	private void setPerson() {
@@ -281,7 +273,7 @@ public class MainActivity extends FragmentActivity {
 			public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
 				return new CursorLoader(
 		                MainActivity.this,
-		                ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+		                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
 		                PROJECTION,
 		                null,
 		                null,
