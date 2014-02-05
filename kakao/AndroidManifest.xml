@@ -58,6 +58,9 @@
         <activity
             android:name="com.example.kakao.ProfileActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+        <activity
+            android:name="com.example.kakao.ImageActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
     </application>
 
 </manifest>

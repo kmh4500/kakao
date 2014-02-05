@@ -2,6 +2,7 @@ package com.example.kakao;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -244,6 +245,8 @@ public class MainActivity extends FragmentActivity {
 
 	private SimpleCursorAdapter mCursorAdapter;
 
+	private ArrayList<Integer> mProfilePics;
+
 	private static final String[] PROJECTION =
         {
 			ContactsContract.CommonDataKinds.Phone._ID,
@@ -264,7 +267,7 @@ public class MainActivity extends FragmentActivity {
 	private void setPerson() {
 		mFriend = (ListView) findViewById(R.id.friend);
 		
-		mCursorAdapter = new SimpleCursorAdapter(
+		mCursorAdapter = new FriendAdapter(
                 this,
                 R.layout.friend_item,
                 null,
@@ -290,6 +293,12 @@ public class MainActivity extends FragmentActivity {
 
 			@Override
 			public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
+				int count = cursor.getCount();
+			    mProfilePics = new ArrayList<Integer>();
+			   for (int i = 0; i < count; ++i) {
+				   int resId = Math.random() > 0.5 ? R.drawable.profile : R.drawable.profile2;
+					mProfilePics.add(resId);
+				}
 				mCursorAdapter.swapCursor(cursor);
 			}
 
@@ -300,10 +309,11 @@ public class MainActivity extends FragmentActivity {
 			}
 		});
 		
+	    
 		mFriend.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+			public void onItemClick(AdapterView<?> arg0, View view, int position,
 					long arg3) {
 				Intent intent = new Intent(MainActivity.this,
 						ProfileActivity.class);
@@ -316,26 +326,25 @@ public class MainActivity extends FragmentActivity {
 					intent.putExtra("name", name);
 					intent.putExtra("room_id", position + 1);
 					intent.putExtra("phone", phone);
+					intent.putExtra("image", mProfilePics.get(position));
 				}
 				startActivity(intent);
 			}
 		});
 	}
 	
-	private class FriendAdapter extends ArrayAdapter<String> {
+	private class FriendAdapter extends SimpleCursorAdapter {
 
-		public FriendAdapter(Context context, int resource, int textViewResourceId, String[] objects) {
-			super(context, resource, textViewResourceId, objects);
+		public FriendAdapter(Context context, int layout, Cursor c,
+				String[] from, int[] to, int flags) {
+			super(context, layout, c, from, to, flags);
 		}
 		
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View friendItemView = super.getView(position, convertView, parent);
-			mPic = (ImageView) friendItemView.findViewById(R.id.pic);
-			mPic.setImageResource(pics[position]);
-			mText = (TextView) friendItemView.findViewById(R.id.text);
-			mText.setText(texts[position]);
-			return friendItemView;
+		public void bindView(View view, Context arg1, Cursor cursor) {
+			super.bindView(view, arg1, cursor);
+			ImageView image = (ImageView) view.findViewById(R.id.pic);
+			image.setImageResource(mProfilePics.get(cursor.getPosition()));
 		}
 	}
 

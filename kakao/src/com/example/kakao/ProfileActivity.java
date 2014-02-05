@@ -58,5 +58,15 @@ public class ProfileActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+		
+		findViewById(R.id.profile).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(ProfileActivity.this,
+						ImageActivity.class);
+				startActivity(intent);
+			}
+		});
 	}
 }
