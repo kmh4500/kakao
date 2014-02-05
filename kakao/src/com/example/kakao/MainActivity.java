@@ -299,7 +299,7 @@ public class MainActivity extends FragmentActivity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
 				Intent intent = new Intent(MainActivity.this,
-						RoomActivity.class);
+						ProfileActivity.class);
 				intent.putExtra("name", names[position]);
 				intent.putExtra("room_id", position + 1);
 				startActivity(intent);
