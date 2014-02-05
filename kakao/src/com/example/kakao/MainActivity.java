@@ -28,6 +28,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -227,6 +229,19 @@ public class MainActivity extends Activity {
 	private void setPerson() {
 		mFriend = (ListView) findViewById(R.id.friend);
 		mFriend.setAdapter(new FriendAdapter(this, R.layout.friend_item, R.id.name, names));
+		mFriend.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				Intent intent = new Intent(MainActivity.this,
+						RoomActivity.class);
+				intent.putExtra("name", names[position]);
+				intent.putExtra("room_id", position + 1);
+				startActivity(intent);
+				
+			}
+		});
 		/*
 		for (int i = 0; i < 4; ++i) {
 			View friendItemView = View
@@ -239,11 +254,6 @@ public class MainActivity extends Activity {
 
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(MainActivity.this,
-							RoomActivity.class);
-					intent.putExtra("name", roomName);
-					intent.putExtra("room_id", roomId);
-					startActivity(intent);
 				}
 			});
 		}*/
