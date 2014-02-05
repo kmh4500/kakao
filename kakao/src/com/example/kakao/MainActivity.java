@@ -232,11 +232,7 @@ public class MainActivity extends Activity {
 			View friendItemView = View
 					.inflate(this, R.layout.friend_item, null);
 			mFriend.addView(friendItemView);
-			mName = (TextView) friendItemView.findViewById(R.id.name);
-			mName.setText(names[i]);
-			mPic = (ImageView) friendItemView.findViewById(R.id.pic);
-			mPic.setImageResource(pics[i]);
-			mText = (TextView) friendItemView.findViewById(R.id.text);
+			
 			final String roomName = names[i];
 			final int roomId = i + 1;
 			friendItemView.setOnClickListener(new OnClickListener() {
@@ -250,7 +246,6 @@ public class MainActivity extends Activity {
 					startActivity(intent);
 				}
 			});
-			mText.setText(texts[i]);
 		}*/
 	}
 	
@@ -258,6 +253,16 @@ public class MainActivity extends Activity {
 
 		public FriendAdapter(Context context, int resource, int textViewResourceId, String[] objects) {
 			super(context, resource, textViewResourceId, objects);
+		}
+		
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View friendItemView = super.getView(position, convertView, parent);
+			mPic = (ImageView) friendItemView.findViewById(R.id.pic);
+			mPic.setImageResource(pics[position]);
+			mText = (TextView) friendItemView.findViewById(R.id.text);
+			mText.setText(texts[position]);
+			return friendItemView;
 		}
 	}
 
