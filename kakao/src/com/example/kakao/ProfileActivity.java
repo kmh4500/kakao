@@ -14,6 +14,7 @@ public class ProfileActivity extends Activity {
 	private String mPhone;
 	private int mRoomId;
 	private String mName;
+	private int mImageId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class ProfileActivity extends Activity {
 		mName = getIntent().getExtras().getString("name");
 		mPhone = getIntent().getExtras().getString("phone");
 		mRoomId = getIntent().getExtras().getInt("room_id");
+		mImageId = getIntent().getExtras().getInt("image");
 		TextView view = (TextView) findViewById(R.id.profile_name);
 		view.setText(mName);
 		
@@ -59,7 +61,9 @@ public class ProfileActivity extends Activity {
 			}
 		});
 		
-		findViewById(R.id.profile).setOnClickListener(new OnClickListener() {
+		ImageView imageView = (ImageView) findViewById(R.id.profile);
+		imageView.setImageResource(mImageId);
+		imageView.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
