@@ -1,7 +1,12 @@
 package com.example.kakao;
 
+import com.example.kakao.db.RoomContract.RoomEntry;
+import com.example.kakao.db.RoomDbHelper;
+
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -53,6 +58,14 @@ public class ProfileActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
+				// Insert 
+				RoomDbHelper mDbHelper = new RoomDbHelper(ProfileActivity.this);
+				SQLiteDatabase db = mDbHelper.getWritableDatabase();
+				ContentValues values = new ContentValues();
+				values.put(RoomEntry.COLUMN_NAME_ROOM_NAME, mName);
+				values.put(RoomEntry.COLUMN_NAME_ROOM_ID, mRoomId);
+				long newId = db.insert(RoomEntry.TABLE_NAME, null, values);
+				
 				Intent intent = new Intent(ProfileActivity.this,
 						RoomActivity.class);
 				intent.putExtra("name", mName);
