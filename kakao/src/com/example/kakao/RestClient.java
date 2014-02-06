@@ -47,7 +47,7 @@ public class RestClient {
 		nameValuePairs.add(new BasicNameValuePair("room_id", String.valueOf(roomId)));
 
 		try {
-			HttpEntity entity = new UrlEncodedFormEntity(nameValuePairs);
+			HttpEntity entity = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
 			post.setEntity(entity);
 			HttpResponse response = client.execute(post, localContext);
 			String result = EntityUtils.toString(response.getEntity());
