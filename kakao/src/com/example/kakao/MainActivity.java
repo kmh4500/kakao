@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.example.kakao.db.RoomContract.RoomEntry;
+import com.example.kakao.db.RoomDbHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -18,6 +20,7 @@ import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
 import android.provider.MediaStore;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,6 +28,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.database.DataSetObserver;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.FragmentActivity;
@@ -82,6 +86,15 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		RoomDbHelper mDbHelper = new RoomDbHelper(this);
+		SQLiteDatabase db = mDbHelper.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(RoomEntry.COLUMN_NAME_PROFILE_ID, R.drawable.profile);
+		values.put(RoomEntry.COLUMN_NAME_ROOM_NAME, "Test Room");
+		values.put(RoomEntry.COLUMN_NAME_ROOM_ID, 1);
+		long newId = db.insert(RoomEntry.TABLE_NAME, null, values);
+		System.out.println("insert success : " + newId);
 		
 		int randomIndex = (int) Math.floor(Math.random() * (double) students.length);
 		Toast.makeText(this, "DangChum ! " + students[randomIndex], Toast.LENGTH_LONG).show();
