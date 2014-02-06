@@ -135,7 +135,7 @@ public class MainActivity extends FragmentActivity {
 		
 		mRoomCursorAdapter = new RoomAdapter(
                 this,
-                R.layout.friend_item,
+                R.layout.room_item,
                 c,
                 ROOM_FROM_COLUMNS, ROOM_TO_IDS,
                 0);
@@ -412,6 +412,13 @@ public class MainActivity extends FragmentActivity {
 			ImageView image = (ImageView) view.findViewById(R.id.pic);
 			int imageId = cursor.getInt(cursor.getColumnIndex(RoomEntry.COLUMN_NAME_PROFILE_ID));
 			image.setImageResource(imageId);
+			view.findViewById(R.id.close).setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Toast.makeText(MainActivity.this, "close clicked", Toast.LENGTH_SHORT).show();
+				}
+			});
 		}
 	}
 
