@@ -133,6 +133,26 @@ public class MainActivity extends FragmentActivity {
                 0);
 		
 		mChat.setAdapter(mRoomCursorAdapter);
+		mChat.setItemsCanFocus(false);
+		mChat.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				Intent intent = new Intent(MainActivity.this,
+						RoomActivity.class);
+				Cursor cursor = mRoomCursorAdapter.getCursor();
+				if (cursor.moveToPosition(position)) {
+					String name = cursor.getString(cursor.getColumnIndex(
+							RoomEntry.COLUMN_NAME_ROOM_NAME));
+					int roomId = cursor.getInt(cursor.getColumnIndex(
+							RoomEntry.COLUMN_NAME_ROOM_ID));
+					intent.putExtra("name", name);
+					intent.putExtra("room_id", roomId);
+				}
+				startActivity(intent);
+			}
+		});
 		mSearch = findViewById(R.id.search);
 		mMore = findViewById(R.id.more);
 		findViewById(R.id.friend_button).setOnClickListener(
