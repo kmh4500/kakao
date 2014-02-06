@@ -58,7 +58,7 @@ public class MainActivity extends FragmentActivity {
 	private static final String TAG = "MainActivity";
 	
 	private ListView mFriend;
-	private View mChat;
+	private ListView mChat;
 	private View mSearch;
 	private View mMore;
 	private ImageView mProfile;
@@ -125,7 +125,10 @@ public class MainActivity extends FragmentActivity {
 		setContentView(R.layout.activity_main);
 
 		mFriend = (ListView) findViewById(R.id.friend);
-		mChat = findViewById(R.id.chat);
+		mChat = (ListView) findViewById(R.id.chat);
+		mChat.setAdapter(new ArrayAdapter<String>(this, R.layout.test, new String[] {
+				"test1", "test2"
+		}));
 		mSearch = findViewById(R.id.search);
 		mMore = findViewById(R.id.more);
 		findViewById(R.id.friend_button).setOnClickListener(
