@@ -79,14 +79,18 @@ public class MainActivity extends FragmentActivity {
     Context context;
 
     String regid;
+
+	private RoomAdapter mRoomCursorAdapter;
     
     public static final String[] students = {
     	"jongbae", "jineui", "kimoon", "jungin", "hyungchul", "seunghwan", "jaehyung"
     };
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		/*
 		// Insert 
 		RoomDbHelper mDbHelper = new RoomDbHelper(this);
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -95,28 +99,20 @@ public class MainActivity extends FragmentActivity {
 		values.put(RoomEntry.COLUMN_NAME_ROOM_NAME, "Test Room");
 		values.put(RoomEntry.COLUMN_NAME_ROOM_ID, 1);
 		long newId = db.insert(RoomEntry.TABLE_NAME, null, values);
-		
+		*/
 		// Select 
-		db = mDbHelper.getReadableDatabase();
-
-		// Define a projection that specifies which columns from the database
-		// you will actually use after this query.
-		String[] projection = {
-				RoomEntry._ID,
-				RoomEntry.COLUMN_NAME_ROOM_NAME
-		    };
+		RoomDbHelper mDbHelper = new RoomDbHelper(this);
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
 		Cursor c = db.query(
 			RoomEntry.TABLE_NAME,  // The table to query
-		    projection,                               // The columns to return
+		    null,                               // The columns to return
 		    null,                                // The columns for the WHERE clause
 		    null,                            // The values for the WHERE clause
 		    null,                                     // don't group the rows
 		    null,                                     // don't filter by row groups
 		    null                                 // The sort order
 		    );
-		
-		System.out.println("query success : " + c.getCount());
 		
 		
 		int randomIndex = (int) Math.floor(Math.random() * (double) students.length);
@@ -126,9 +122,25 @@ public class MainActivity extends FragmentActivity {
 
 		mFriend = (ListView) findViewById(R.id.friend);
 		mChat = (ListView) findViewById(R.id.chat);
-		mChat.setAdapter(new ArrayAdapter<String>(this, R.layout.test, new String[] {
-				"test1", "test2"
-		}));
+
+		final String[] ROOM_FROM_COLUMNS = {
+			RoomEntry.COLUMN_NAME_ROOM_ID,
+			RoomEntry.COLUMN_NAME_ROOM_NAME,
+		};
+
+		final int[] ROOM_TO_IDS = {
+				R.id.text,
+				R.id.name
+		};
+		
+		mRoomCursorAdapter = new RoomAdapter(
+                this,
+                R.layout.friend_item,
+                c,
+                ROOM_FROM_COLUMNS, ROOM_TO_IDS,
+                0);
+		
+		mChat.setAdapter(mRoomCursorAdapter);
 		mSearch = findViewById(R.id.search);
 		mMore = findViewById(R.id.more);
 		findViewById(R.id.friend_button).setOnClickListener(
@@ -384,6 +396,22 @@ public class MainActivity extends FragmentActivity {
 			super.bindView(view, arg1, cursor);
 			ImageView image = (ImageView) view.findViewById(R.id.pic);
 			image.setImageResource(mProfilePics.get(cursor.getPosition()));
+		}
+	}
+	
+	private class RoomAdapter extends SimpleCursorAdapter {
+
+		public RoomAdapter(Context context, int layout, Cursor c,
+				String[] from, int[] to, int flags) {
+			super(context, layout, c, from, to, flags);
+		}
+		
+		@Override
+		public void bindView(View view, Context arg1, Cursor cursor) {
+			super.bindView(view, arg1, cursor);
+			ImageView image = (ImageView) view.findViewById(R.id.pic);
+			int imageId = cursor.getInt(cursor.getColumnIndex(RoomEntry.COLUMN_NAME_PROFILE_ID));
+			image.setImageResource(imageId);
 		}
 	}
 
