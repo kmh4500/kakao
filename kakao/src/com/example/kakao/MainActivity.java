@@ -87,6 +87,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		// Insert 
 		RoomDbHelper mDbHelper = new RoomDbHelper(this);
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -94,7 +95,29 @@ public class MainActivity extends FragmentActivity {
 		values.put(RoomEntry.COLUMN_NAME_ROOM_NAME, "Test Room");
 		values.put(RoomEntry.COLUMN_NAME_ROOM_ID, 1);
 		long newId = db.insert(RoomEntry.TABLE_NAME, null, values);
-		System.out.println("insert success : " + newId);
+		
+		// Select 
+		db = mDbHelper.getReadableDatabase();
+
+		// Define a projection that specifies which columns from the database
+		// you will actually use after this query.
+		String[] projection = {
+				RoomEntry._ID,
+				RoomEntry.COLUMN_NAME_ROOM_NAME
+		    };
+
+		Cursor c = db.query(
+			RoomEntry.TABLE_NAME,  // The table to query
+		    projection,                               // The columns to return
+		    null,                                // The columns for the WHERE clause
+		    null,                            // The values for the WHERE clause
+		    null,                                     // don't group the rows
+		    null,                                     // don't filter by row groups
+		    null                                 // The sort order
+		    );
+		
+		System.out.println("query success : " + c.getCount());
+		
 		
 		int randomIndex = (int) Math.floor(Math.random() * (double) students.length);
 		Toast.makeText(this, "DangChum ! " + students[randomIndex], Toast.LENGTH_LONG).show();
