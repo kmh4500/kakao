@@ -81,6 +81,8 @@ public class MainActivity extends FragmentActivity {
     String regid;
 
 	private RoomAdapter mRoomCursorAdapter;
+
+	private RoomDbHelper mDbHelper;
     
     public static final String[] students = {
     	"jongbae", "jineui", "kimoon", "jungin", "hyungchul", "seunghwan", "jaehyung"
@@ -101,7 +103,7 @@ public class MainActivity extends FragmentActivity {
 		long newId = db.insert(RoomEntry.TABLE_NAME, null, values);
 		*/
 		// Select 
-		RoomDbHelper mDbHelper = new RoomDbHelper(this);
+		mDbHelper = new RoomDbHelper(this);
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
 		Cursor c = db.query(
@@ -409,17 +411,34 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public void bindView(View view, Context arg1, Cursor cursor) {
 			super.bindView(view, arg1, cursor);
-			ImageView image = (ImageView) view.findViewById(R.id.pic);
-			int imageId = cursor.getInt(cursor.getColumnIndex(RoomEntry.COLUMN_NAME_PROFILE_ID));
-			image.setImageResource(imageId);
+			final int id = cursor.getInt(cursor.getColumnIndex(RoomEntry._ID));
 			view.findViewById(R.id.close).setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
-					Toast.makeText(MainActivity.this, "close clicked", Toast.LENGTH_SHORT).show();
+					SQLiteDatabase db = mDbHelper.getWritableDatabase();
+					db.delete(RoomEntry.TABLE_NAME, RoomEntry._ID + " = ?", new String[] {
+							String.valueOf(id)
+					});
+					updateRoomCursor();
 				}
 			});
 		}
+	}
+
+	private void updateRoomCursor() {
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+		Cursor c = db.query(
+			RoomEntry.TABLE_NAME,  // The table to query
+		    null,                               // The columns to return
+		    null,                                // The columns for the WHERE clause
+		    null,                            // The values for the WHERE clause
+		    null,                                     // don't group the rows
+		    null,                                     // don't filter by row groups
+		    null                                 // The sort order
+		    );
+		mRoomCursorAdapter.swapCursor(c);
 	}
 
 	@Override
