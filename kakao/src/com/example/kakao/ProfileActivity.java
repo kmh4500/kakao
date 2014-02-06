@@ -69,6 +69,7 @@ public class ProfileActivity extends Activity {
 			public void onClick(View v) {
 				Intent intent = new Intent(ProfileActivity.this,
 						ImageActivity.class);
+				intent.putExtra("image", mImageId);
 				startActivity(intent);
 			}
 		});
