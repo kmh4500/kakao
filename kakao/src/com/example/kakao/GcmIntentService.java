@@ -44,11 +44,11 @@ public class GcmIntentService extends IntentService {
              */
             if (GoogleCloudMessaging.
                     MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                sendNotification("Send error: " + extras.toString());
+                sendNotification("Send error: " + extras.toString(), 1);
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_DELETED.equals(messageType)) {
                 sendNotification("Deleted messages on server: " +
-                        extras.toString());
+                        extras.toString(), 1);
             // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
@@ -56,7 +56,7 @@ public class GcmIntentService extends IntentService {
             		roomActivity.getMessage();
             	}
                // Post notification of received message.
-                sendNotification(extras.getString("content"));
+                sendNotification(extras.getString("content"), extras.getInt("room_id"));
                 Log.i(TAG, "Received: " + extras.toString());
             }
         }
@@ -67,13 +67,13 @@ public class GcmIntentService extends IntentService {
     // Put the message into a notification and post it.
     // This is just one simple example of what you might choose to do with
     // a GCM message.
-    private void sendNotification(String msg) {
+    private void sendNotification(String msg, int roomId) {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         Intent intent = new Intent(this, RoomActivity.class);
         intent.putExtra("name", MainActivity.names[0]);
-        intent.putExtra("room_id",1);
+        intent.putExtra("room_id",roomId);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
         		intent, PendingIntent.FLAG_CANCEL_CURRENT);
         Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
